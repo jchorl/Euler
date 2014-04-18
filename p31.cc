@@ -39,6 +39,6 @@ int options(int curr, int smallest){
 }
 
 int main(int argc, const char* argv[]){
-	cout << options(0) << endl;
+	cout << options(0, 0) << endl;
 }
 
