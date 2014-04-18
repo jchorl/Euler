@@ -6,7 +6,7 @@
 #include <limits>
 using namespace std;
 
-bool checkNum(long n){
+bool checkNum(int n){
 	int i= n;
 	vector<int> digits;
 	while(i>10){
@@ -31,7 +31,9 @@ bool checkNum(long n){
 }
 int main(int argc, const char* argv[]){
 	int sum= 0;
-	for(long i= 10; i<numeric_limits<long>::max(); i++){
+	#pragma omp parallel for reduction(+:sum)
+	//for(int i= 10; i<numeric_limits<int>::max(); i++){
+	for(int i= 10; i<100000000; i++){
 		if(checkNum(i)){
 			sum+=i;
 		}
