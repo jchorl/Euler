@@ -1,27 +1,44 @@
+import java.util.ArrayList;
+import java.util.Collections;
 public class p24{
-	public static boolean check(long i){
-		String str= Long.toString(i);
-		if(i<1000000000){
-			if(str.contains("1")&&str.contains("2")&&str.contains("3")&&str.contains("4")&&str.contains("5")&&str.contains("6")&&str.contains("7")&&str.contains("8")&&str.contains("9")){
-				return true;
+	private static ArrayList<Character> chars;
+	public static void permute(){
+		for(int i = 0; i < chars.size(); i++){
+			boolean sorted = true;
+			for(int j = i; j < chars.size()-1; j++){
+				if(chars.get(j)<chars.get(j+1)){
+					sorted = false;
+				}
 			}
-			return false;
-		}
-		else{
-			if(str.contains("0")&&str.contains("1")&&str.contains("2")&&str.contains("3")&&str.contains("4")&&str.contains("5")&&str.contains("6")&&str.contains("7")&&str.contains("8")&&str.contains("9")){
-				return true;
+			if(i==(chars.size()-1)){
+				Character temp = chars.get(chars.size()-1);
+				chars.set(chars.size()-1, chars.get(chars.size()-2));
+				chars.set(chars.size()-2, temp);
 			}
-			return false;
+			else if(sorted){
+				Character nextGreatest = '9';
+				int location = -1;
+				for(int j = i; j < chars.size(); j++){
+					if(chars.get(j)>chars.get(i-1)&&chars.get(j)<=nextGreatest){
+						nextGreatest = chars.get(j);
+						location = j;
+					}
+				}
+				chars.set(location, chars.get(i-1));
+				chars.set(i-1, nextGreatest);
+				Collections.sort(chars.subList(i, chars.size()));
+				break;
+			}
 		}
 	}
 	public static void main(String[] args){
-		long original= 123456789;
-		for(int i= 1; i<1000000; i++){
-			original++;
-			while(!check(original)){
-				original++;
-			}
+		chars = new ArrayList<Character>();
+		for(int i = 0; i<10; i++){
+			chars.add((char)(i+'0'));
 		}
-		System.out.println(original);
+		for (int i = 0; i < 999999; i++) {
+			permute();
+		}
+		System.out.println(chars);
 	}
 }
