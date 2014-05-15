@@ -29,7 +29,7 @@ public class p15 {
 		for(int i = 0; i<remaining.length; i++){
 			remaining[i] = 0;
 		}
-		System.out.println(latticePaths(Integer.parseInt(args[0]),Integer.parseInt(args[0])));
+		System.out.println(latticePaths(20,20));
 	}
 
 }
