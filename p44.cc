@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cassert>
-#include <unordered_set>
+#include <vector>
 #include <cmath>
 #include <algorithm>
 using namespace std;
@@ -9,28 +9,29 @@ int pentagonal(int n){
 	return (n*(3*n-1))/2;
 }
 
-int main(int argc, const char* argv[]){
-	unordered_set<int> pentagonals;
-	unordered_set<int> checked;
-	for(int i = 1; i < 8000; i++){
-		pentagonals.insert(pentagonal(i));
+bool checkPentagonal(long p){
+	double n = (1 + sqrt(1+24*p))/6;
+	if(abs(floor(n)-n)<0.000001){
+		return true;
 	}
-	int minD = 9999999;
+	return false;
+}
 
-	for(unordered_set<int>::iterator oit = pentagonals.begin(); oit!=pentagonals.end(); oit++){
-		for(unordered_set<int>::iterator iit = pentagonals.begin(); iit!=pentagonals.end(); iit++){
-			if(checked.find(((*oit+*iit)*(*oit + *iit + 1))/2+min(*oit, *iit)) == checked.end()){
-				if(pentagonals.find(*oit + *iit) != pentagonals.end()){
-					if(pentagonals.find(*oit - *iit) != pentagonals.end()){
-						if(abs(*oit-*iit)<minD){
-							minD = abs(*oit - *iit);
-						}
-					}
+int main(int argc, const char* argv[]){
+	vector<int> pentagonals;
+	bool found = false;
+	for(int i = 0; !found; i++){
+		pentagonals.push_back(pentagonal(i+1));
+		for (int j = 0; j < pentagonals.size(); ++j)
+		{
+			int diff = pentagonals[i]-pentagonals[j];
+			if(checkPentagonal(diff)){
+				if(checkPentagonal(pentagonals[i]+pentagonals[j])){
+					cout << diff << endl;
+					found = true;
 				}
-				checked.insert(((*oit+*iit)*(*oit + *iit + 1))/2+min(*oit, *iit));
 			}
 		}
 	}
-	cout << minD << endl;
 }
 
