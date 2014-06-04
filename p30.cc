@@ -2,8 +2,9 @@
 #include <string>
 #include <cassert>
 #include <vector>
-#include <math.h>
+#include <cmath>
 #include <limits>
+#include <algorithm>
 using namespace std;
 
 //compile with -fopenmp to utilize all cores
@@ -16,10 +17,11 @@ bool checkNum(int n){
 		i/=10;
 	}
 	digits.push_back(i%10);
+	sort(digits.begin(), digits.end(), greater<int>());
 	int sum= 0;
 	for(vector<int>::const_iterator it=digits.begin(); it!=digits.end(); it++){
 		int p= pow(*it, 5);
-		if(p>n){
+		if(p>n || sum>n){
 			return false;
 		}
 		else{
@@ -33,9 +35,8 @@ bool checkNum(int n){
 }
 int main(int argc, const char* argv[]){
 	int sum= 0;
-	//for(int i= 10; i<numeric_limits<int>::max(); i++){
-	#pragma omp parallel for reduction(+:sum)
-	for(int i= 10; i<100000000; i++){
+	//#pragma omp parallel for reduction(+:sum)
+	for(int i= 10; i<(pow(9,5)*(to_string(i).size())); i++){
 		if(checkNum(i)){
 			sum+=i;
 		}
