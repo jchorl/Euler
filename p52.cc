@@ -1,21 +1,23 @@
 #include <iostream>
 #include <string>
 #include <cassert>
-#include <vector>
 #include <algorithm>
+#include <set>
 using namespace std;
 
+set<int> getDigits(int n){
+}
 bool checkPermutation(int a, int b){
-	vector<int> v1, v2;
+	set<int> s1, s2;
 	while (a) {
-		v1.push_back(a % 10);
+		s1.insert(a % 10);
 		a /= 10;
 	}
 	while (b) {
-		v2.push_back(b % 10);
+		s2.insert(b % 10);
 		b /= 10;
 	}
-	return is_permutation(v1.begin(), v1.end(), v2.begin());
+	return s1==s2;
 }
 int main(int argc, const char* argv[]){
 	bool found = false;
