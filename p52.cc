@@ -6,26 +6,21 @@
 using namespace std;
 
 set<int> getDigits(int n){
-}
-bool checkPermutation(int a, int b){
-	set<int> s1, s2;
-	while (a) {
-		s1.insert(a % 10);
-		a /= 10;
+	set<int> s;
+	while (n) {
+		s.insert(n % 10);
+		n /= 10;
 	}
-	while (b) {
-		s2.insert(b % 10);
-		b /= 10;
-	}
-	return s1==s2;
+	return s;
 }
 int main(int argc, const char* argv[]){
 	bool found = false;
 	for(int i = 1; !found; i++){
-		if(checkPermutation(2*i, 3*i)){
-			if(checkPermutation(2*i, 4*i)){
-				if(checkPermutation(2*i, 5*i)){
-					if(checkPermutation(2*i, 6*i)){
+		set<int> s = getDigits(2*i);
+		if(getDigits(3*i)==s){
+			if(getDigits(4*i)==s){
+				if(getDigits(5*i)==s){
+					if(getDigits(6*i)==s){
 						cout << i << endl;
 						found = true;
 					}
