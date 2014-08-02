@@ -51,17 +51,25 @@ int main(int argc, const char* argv[]){
 		bool checks[9];
 		for(int j = 0; j < options.size(); j++){
 			for(int i = 1; i < 10; ++i){
-					int temp = (*it)+i*(options[j]);
-					int temp2 = *it;
-					while(temp){
-						if(temp%10 < temp2%10){
-							checks[0] = false;
-							checks[1] = false;
-							checks[2] = false;
-						}
-						temp /= 10;
-						temp2 /= 10;
+				int temp = ((*it) + i * (options[j])) / 10;
+				int temp2 = (*it) / 10;
+				bool good = true;
+				while(temp){
+					if(temp%10 < temp2%10){
+						for(int k = i - 1; k < 9; k++)
+							checks[k] = false;
+
+						good = false;
+						break;
 					}
+					temp /= 10;
+					temp2 /= 10;
+				}
+
+				if(!good){
+					break;
+				}
+
 				if(binary_search(primes.begin(), primes.end(), (*it)+i*(options[j]))){
 					checks[i-1] = true;
 				}
