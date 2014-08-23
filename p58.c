@@ -42,4 +42,6 @@ int main(int argc, char* argv[]){
 	layer--;
 
 	printf("%d\n", 2*layer - 1);
+
+	free(newCorners);
 }
