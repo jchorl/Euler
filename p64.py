@@ -1,19 +1,13 @@
 import math
+import time
 
 class Frac():
     def __init__(self, num, den, multiplier):
         self.num = num
         self.den = den
         self.multiplier = multiplier
-    def __eq__(self, other):
-        return self.num == other.num and self.den == other.den and self.multiplier == other.multiplier
-
-class NumRad():
-    def __init__(self, num, rad):
-        self.num = num
-        self.rad = rad
-    def __eq__(self, other):
-        return self.num == other.num and self.rad == other.rad
+    def __hash__(self):
+        return hash((self.num, self.den, self.multiplier))
 
 def gcf(a, b):
     while b != 0:
@@ -22,11 +16,11 @@ def gcf(a, b):
         b = c
     return a
 
-def pullOut(frac):
-    #frac has numRad on top and int on bottom
-    p = int((frac.num.num + math.sqrt(frac.num.rad)) / frac.den)
+def pullOut(frac, rt):
+    p = int((frac.num + rt) / frac.den)
     sub = p * frac.den
-    return Frac(NumRad(frac.num.num - sub, frac.num.rad), frac.den, frac.multiplier)
+    frac.num = frac.num - sub
+    return frac
 
 def reduce(frac):
     g = gcf(frac.den, frac.multiplier)
@@ -36,22 +30,29 @@ def reduce(frac):
 
 def getPeriod(num):
     seen = []
+    seenSet = set()
     a0 = int(math.sqrt(num))
     if a0 ** 2 == num:
         return 0
-    f = Frac(NumRad(a0, num), num - a0 ** 2, 1)
-    while not f in seen:
-        seen.append(f)
-        f = pullOut(f)
+    f = Frac(a0, num - a0 ** 2, 1)
+    while True:
+        h = hash(f)
+        if h in seenSet:
+            break
+        seen.append(h)
+        seenSet.add(h)
+        f = pullOut(f, a0)
         f.multiplier = f.den
-        f.den = f.num.rad - (f.num.num ** 2)
-        f.num.num = -f.num.num
+        f.den = num - (f.num ** 2)
+        f.num = -f.num
         reduce(f)
-    seen.reverse()
-    return seen.index(f) + 1
+    return len(seen) - seen.index(hash(f))
 
+start_time = time.time()
 oddCount = 0
 for i in range(2, 10000):
     if getPeriod(i) % 2 == 1:
         oddCount = oddCount + 1
+end_time = time.time()
 print(oddCount)
+print('%s seconds' %(end_time - start_time))
