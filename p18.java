@@ -1,5 +1,4 @@
 public class p18 {
-
 	public static int sum(int[][] a){
 		for(int i= a.length-2; i>=0; i--){
 			for(int j= 0; j<a[i].length; j++){
@@ -27,5 +26,4 @@ public class p18 {
 				{ 4, 62, 98, 27, 23, 9, 70, 98, 73, 93, 38, 53, 60, 4, 23 } };
 		System.out.println(sum(pyramid));
 	}
-
 }
