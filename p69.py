@@ -1,29 +1,19 @@
-from multiprocessing import Pool
+from math import sqrt
 
 LIMIT = 1000000
 
-def calc_phi(n):
-    n2 = n
-    result = n
-    i = 2
-    while i * i <= n:
+def is_prime(n):
+    if n > 2 and n % 2 == 0:
+        return False
+    for i in range(3, int(sqrt(n)) + 1, 2):
         if n % i == 0:
-            while n % i == 0:
-                n //= i
-            result -= result // i
-        i += 1
-    if n > 1:
-        result -= result // n
-    return (n2, n2/result)
+            return False
+    return True
 
-p = Pool()
-results = p.map(calc_phi, range(2, LIMIT + 1))
-p.close()
-
-mx = 2
-mx_ratio = 1
-for n, ratio in results:
-    if ratio > mx_ratio:
-        mx = n
-        mx_ratio = ratio
-print(mx)
+prod = 1
+for i in range(2, LIMIT):
+    if prod * i > LIMIT:
+        print(prod)
+        break
+    if is_prime(i):
+        prod *= i
